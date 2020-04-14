@@ -36,7 +36,7 @@
         <okta.version>1.1.0</okta.version>
         <spring-shell.version>2.0.0.RELEASE</spring-shell.version>
         <camel.version>2.24.1</camel.version>
-        <nimbus-jose-jwt.version>6.0.2</nimbus-jose-jwt.version>
+        <nimbus-jose-jwt.version>7.9</nimbus-jose-jwt.version>
 
         <fastjson.version>1.2.58</fastjson.version>
         <druid.starter.version>1.1.18</druid.starter.version>
