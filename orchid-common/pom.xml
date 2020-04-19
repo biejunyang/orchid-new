@@ -11,5 +11,8 @@
 
     <artifactId>orchid-common</artifactId>
 
+    <modules>
+        <module>orchid-redis</module>
+    </modules>
 
 </project>
