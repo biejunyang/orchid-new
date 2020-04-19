@@ -3,18 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>orchid</artifactId>
+        <artifactId>orchid-common</artifactId>
         <groupId>com.orchid</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>orchid-common</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>orchid-web</artifactId>
 
-    <modules>
-        <module>orchid-redis</module>
-        <module>orchid-web</module>
-    </modules>
+    <dependencies>
+
+    </dependencies>
 
 </project>
