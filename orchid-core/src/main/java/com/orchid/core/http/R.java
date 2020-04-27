@@ -52,7 +52,9 @@ public class R {
     public static R error(Object data) {
         return new R(CODE_ERROR,  "error", data);
     }
-
+    public static R error(String msg) {
+        return new R(CODE_ERROR,  msg, null);
+    }
     public static R error(String msg, Object data) {
         return new R(CODE_ERROR,  msg, data);
     }
