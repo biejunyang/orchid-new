@@ -24,8 +24,6 @@ import java.net.UnknownHostException;
 public class RedisAutoConfig {
 
 
-
-
     /**
      * Jackson Reids Serilaizer
      * @return
