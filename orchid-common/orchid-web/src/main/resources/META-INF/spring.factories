@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.orchid.web.auth.JwtAutoConfig
+com.orchid.web.auth.jwt.JwtAutoConfig

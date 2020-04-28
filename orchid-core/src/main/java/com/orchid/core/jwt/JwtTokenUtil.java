@@ -10,34 +10,42 @@ import com.orchid.core.jwt.exception.JwtTokenException;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.Map;
 
 public class JwtTokenUtil {
 
 
-    public static String createToken(String subject) throws JOSEException {
+    public static String createToken(String subject){
         return createToken(subject, null);
     }
 
-    public static String createToken(Map<String, Object> payload) throws JOSEException {
-        return createToken(null, payload);
+    public static String createToken(Object claims){
+        return createToken(null, claims);
     }
 
-    public static String createToken(String subject,Object claims) throws JOSEException {
-        Date issureTime=new Date();
-        SignedJWT signedJWT=new SignedJWT(new JWSHeader(JWSAlgorithm.HS256),
-                new JWTClaimsSet.Builder()
-                        .issuer(GlobalJwtConfig.getIssure())
-                        .audience(GlobalJwtConfig.getAudience())
-                        .issueTime(issureTime).notBeforeTime(issureTime)
-                        .expirationTime(new Date(issureTime.getTime()+GlobalJwtConfig.getExpiration()))
-                        .subject(subject).claim("claims", claims)
-                        .build()
-        );
+    public static String createToken(String subject,Object claims){
+        try {
+            Date issureTime=new Date();
+            SignedJWT signedJWT=new SignedJWT(new JWSHeader(JWSAlgorithm.HS256),
+                    new JWTClaimsSet.Builder()
+                            .issuer(GlobalJwtConfig.getIssure())
+                            .audience(GlobalJwtConfig.getAudience())
+                            .issueTime(issureTime).notBeforeTime(issureTime)
+                            .expirationTime(new Date(issureTime.getTime()+GlobalJwtConfig.getExpiration()))
+                            .subject(subject).claim("claims", claims)
+                            .build()
+            );
 
-        JWSSigner jwsSigner=new MACSigner(GlobalJwtConfig.getSecret());
-        signedJWT.sign(jwsSigner);
-        return signedJWT.serialize();
+            JWSSigner jwsSigner=new MACSigner(GlobalJwtConfig.getSecret());
+
+            signedJWT.sign(jwsSigner);
+
+            return signedJWT.serialize();
+        } catch (KeyLengthException e) {
+            e.printStackTrace();
+        } catch (JOSEException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
