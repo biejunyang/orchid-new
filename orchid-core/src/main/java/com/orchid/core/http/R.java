@@ -1,27 +1,19 @@
 package com.orchid.core.http;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
  * rest api 返回数据统一格式
  */
 @Data
-@AllArgsConstructor
 public class R {
-    public static final int SYS_SYSTEM = 100;
 
-    public static final int CODE_SUCCESS=SYS_SYSTEM+0;//成功
-
-    public static final int CODE_ERROR=SYS_SYSTEM+1;//失败
-
-    public static final int CODE_LOGIN_TIMEOUT=SYS_SYSTEM+2;//登录超时
 
 
     /**
      * 状态码
      */
-    private Integer code;
+    private int code;
 
     /**
      * 返回消息
@@ -33,34 +25,65 @@ public class R {
      */
     private Object data;
 
+
+    private R(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    private R(int code, String message, Object data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
+
+
+
+
+
+
+
+
     public static R success() {
-        return new R(CODE_SUCCESS, "success",null);
+        return new R(CodeMessage.SUCCESS.getCode(), CodeMessage.SUCCESS.getMessage(),null);
     }
 
     public static R success(Object data) {
-        return new R(CODE_SUCCESS, "success", data);
+        return new R(CodeMessage.SUCCESS.getCode(), CodeMessage.SUCCESS.getMessage(),data);
     }
 
     public static R success(String msg, Object data) {
-        return new R(CODE_SUCCESS, msg, data);
+        return new R(CodeMessage.SUCCESS.getCode(), msg, data);
     }
 
+
+
     public static R error() {
-        return new R(CODE_ERROR, "error", null);
+        return new R(CodeMessage.SERVER_ERROR.getCode(), CodeMessage.SERVER_ERROR.getMessage(), null);
     }
 
     public static R error(Object data) {
-        return new R(CODE_ERROR,  "error", data);
+        return new R(CodeMessage.SERVER_ERROR.getCode(), CodeMessage.SERVER_ERROR.getMessage(), data);
     }
     public static R error(String msg) {
-        return new R(CODE_ERROR,  msg, null);
+        return new R(CodeMessage.SERVER_ERROR.getCode(),  msg, null);
     }
     public static R error(String msg, Object data) {
-        return new R(CODE_ERROR,  msg, data);
+        return new R(CodeMessage.SERVER_ERROR.getCode(),  msg, data);
     }
+
+    public static  R error(CodeMessage codeMessage){
+        return new R(codeMessage.getCode(), codeMessage.getMessage());
+    }
+
+    public static  R error(CodeMessage codeMessage, Object data){
+        return new R(codeMessage.getCode(), codeMessage.getMessage(), data);
+    }
+
 
     public static R build(boolean success) {
         return success ? success() : error();
     }
+
 
 }
