@@ -1,13 +1,13 @@
-package com.orchid.core.po;
+package com.orchid.core;
 
 
 public class Result<T> {
 
     public final static int OK=200;
-    public final static String OK_MSG="success";
+    public final static String OK_MSG="成功";
 
     public final static int ERROR=500;
-    public final static String ERROR_MESSAGE="error";
+    public final static String ERROR_MESSAGE="服务器错误";
 
     //状态：0失败,1成功
     private Status status;
@@ -29,9 +29,10 @@ public class Result<T> {
     }
 
 
-    public static  <T> Result success(){
+    public static  Result success(){
         return new Result<>(Status.SUCCESS, OK, OK_MSG, null);
     }
+
     public static  <T> Result success(T data){
         return new Result<>(Status.SUCCESS, OK, OK_MSG, data);
     }
@@ -39,6 +40,7 @@ public class Result<T> {
     public static  <T> Result success(int code,T data){
         return new Result<>(Status.SUCCESS, code, OK_MSG, data);
     }
+
     public static  <T> Result success(int code,String msg,T data){
         return new Result<>(Status.SUCCESS, code, msg, data);
     }
@@ -47,6 +49,9 @@ public class Result<T> {
         return new Result<>(Status.SUCCESS, OK, msg, null);
     }
 
+    public static <T> Result success(ResultCode resultCode, T data){
+        return new Result<>(Status.SUCCESS, resultCode.code(), resultCode.msg(), data);
+    }
 
 
     public static Result error() {
@@ -59,6 +64,10 @@ public class Result<T> {
 
     public static Result error(int code,String msg) {
         return new Result(Status.FAILURE, code, msg, null);
+    }
+
+    public static Result error(ResultCode resultCode) {
+        return new Result(Status.FAILURE, resultCode.code(), resultCode.msg(), null);
     }
 
     public static Result build(boolean success) {
@@ -99,7 +108,7 @@ public class Result<T> {
     }
 
     enum Status{
-        FAILURE,SUCCESS
+        FAILURE,SUCCESS,NOT_LOGIN
     }
 
 }
