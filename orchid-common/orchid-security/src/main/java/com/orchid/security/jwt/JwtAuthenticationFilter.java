@@ -2,7 +2,7 @@ package com.orchid.security.jwt;
 
 import com.orchid.core.jwt.JwtTokenUtil;
 import com.orchid.core.Result;
-import com.orchid.core.util.ResponseUtil;
+import com.orchid.web.util.ResponseUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
