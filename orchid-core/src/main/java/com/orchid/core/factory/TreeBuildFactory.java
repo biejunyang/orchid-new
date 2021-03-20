@@ -6,7 +6,9 @@ import cn.hutool.core.util.ObjectUtil;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 默认递归工具类，用于遍历有父子关系的节点，例如菜单树，字典树等等
@@ -35,11 +37,12 @@ public class TreeBuildFactory<T extends TreeNode> {
 //
 //        //构建之后的处理工作
 //        return this.afterBuild(buildComplete);
-
+        Map<Long, T> map=new HashMap<>();
         List<T> tree=CollectionUtil.newArrayList();
         nodes.forEach(n -> {
+            map.put(n.getId(), n);
             if(n.getPid()!=null){
-                T parent=(T)getParentNode(tree, n);
+                T parent=map.get(n.getPid());
                 if(parent!=null){
                     if(parent.getChildren()==null){
                         parent.setChildren(CollectionUtil.newArrayList());
@@ -58,21 +61,6 @@ public class TreeBuildFactory<T extends TreeNode> {
 
 
 
-
-    private TreeNode getParentNode(List<T> tree, T node){
-        if(CollectionUtil.isNotEmpty(tree)){
-            for (T t: tree){
-                if(t.getId().equals(node.getPid())){
-                    return t;
-                }else{
-                    if(CollectionUtil.isNotEmpty(t.getChildren())){
-                        return getParentNode(t.getChildren(), node);
-                    }
-                }
-            }
-        }
-        return null;
-    }
 
 
 

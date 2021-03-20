@@ -1,19 +1,20 @@
 package com.orchid.web.config;
 
-import com.alibaba.fastjson.JSON;
-import com.orchid.core.exception.BaseException;
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.orchid.core.Result;
+import com.orchid.core.exception.BaseException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.validation.BindException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-
-import javax.servlet.http.HttpServletResponse;
 
 
 @Configuration
@@ -44,7 +45,7 @@ public class GlobalControllerAdvice implements ResponseBodyAdvice {
         Result result=Result.success(body);
         if(body instanceof String){
             serverHttpResponse.getHeaders().setContentType(MediaType.APPLICATION_JSON_UTF8);
-            return JSON.toJSONString(result);
+            return JSONUtil.toJsonStr(result);
         }
         return result;
     }
@@ -63,6 +64,10 @@ public class GlobalControllerAdvice implements ResponseBodyAdvice {
         }else if(ex instanceof BindException){
             BindException bindException=((BindException)ex);
             String msg=bindException.getAllErrors().get(0).getDefaultMessage();
+            return Result.error(msg);
+        }else if(ex instanceof MissingServletRequestParameterException){
+            String msg=ex.getMessage();
+            ex.printStackTrace();
             return Result.error(msg);
         }else{
             ex.printStackTrace();
