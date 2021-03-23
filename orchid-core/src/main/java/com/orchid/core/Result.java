@@ -3,11 +3,6 @@ package com.orchid.core;
 
 public class Result<T> {
 
-    public final static int OK=200;
-    public final static String OK_MSG="成功";
-
-    public final static int ERROR=500;
-    public final static String ERROR_MESSAGE="服务器错误";
 
     //状态：0失败,1成功
     private Status status;
@@ -29,24 +24,34 @@ public class Result<T> {
     }
 
 
-    public static  Result success(){
-        return new Result<>(Status.SUCCESS, OK, OK_MSG, null);
-    }
-
-    public static  <T> Result success(T data){
-        return new Result<>(Status.SUCCESS, OK, OK_MSG, data);
-    }
-
-    public static  <T> Result success(int code,T data){
-        return new Result<>(Status.SUCCESS, code, OK_MSG, data);
-    }
 
     public static  <T> Result success(int code,String msg,T data){
         return new Result<>(Status.SUCCESS, code, msg, data);
     }
 
+
+
+    public static  <T> Result success(int code,T data){
+        return new Result<T>(Status.SUCCESS, code, ResultEnum.OK.msg(), data);
+    }
+
+
+    public static  Result success(){
+        return new Result<>(Status.SUCCESS, ResultEnum.OK.code(), ResultEnum.OK.msg(), null);
+    }
+
+    public static  <T> Result success(T data){
+        return new Result<>(Status.SUCCESS, ResultEnum.OK.code(), ResultEnum.OK.msg(), data);
+    }
+
+
+    public static  <T> Result success(ResultCode resultCode){
+        return new Result<T>(Status.SUCCESS, resultCode.code(), resultCode.msg(), null);
+    }
+
+
     public static  Result success(String msg){
-        return new Result<>(Status.SUCCESS, OK, msg, null);
+        return new Result<>(Status.SUCCESS, ResultEnum.OK.code(), msg, null);
     }
 
     public static <T> Result success(ResultCode resultCode, T data){
@@ -55,11 +60,11 @@ public class Result<T> {
 
 
     public static Result error() {
-        return new Result(Status.FAILURE, ERROR, ERROR_MESSAGE, null);
+        return new Result(Status.FAILURE, ResultEnum.SERVER_ERROR.code(), ResultEnum.SERVER_ERROR.msg(), null);
     }
 
     public static Result error(String msg) {
-        return new Result(Status.FAILURE, ERROR, msg, null);
+        return new Result(Status.FAILURE, ResultEnum.SERVER_ERROR.code(), msg, null);
     }
 
     public static Result error(int code,String msg) {
