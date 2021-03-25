@@ -13,4 +13,8 @@ public class ExceptionBuilder {
     public static BaseException build(String msg){
         return new BaseException(ResultEnum.SERVER_ERROR.code(), msg);
     }
+
+    public static BaseException build(int code, String msg){
+        return new BaseException(code, msg);
+    }
 }

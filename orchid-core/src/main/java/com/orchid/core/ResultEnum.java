@@ -6,8 +6,9 @@ public enum  ResultEnum implements ResultCode {
 
     SERVER_ERROR(500, "服务器错误"),
 
-    BUSINESS_PARAM_ERROR(400, "业务参数错误");
+    BUSINESS_PARAM_ERROR(400, "业务参数错误"),
 
+    NOT_FOUND_ERROR(404, "请求找不到");
 
     private int code;
 

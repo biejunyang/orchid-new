@@ -5,6 +5,8 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.orchid.core.Result;
 import com.orchid.core.exception.BaseException;
+import com.orchid.core.exception.ExceptionBuilder;
+import com.sun.javafx.collections.MappingChange;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import java.util.Map;
 
 
 @Configuration
@@ -41,7 +45,10 @@ public class GlobalControllerAdvice implements ResponseBodyAdvice {
     public Object beforeBodyWrite(Object body, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         if(body instanceof Result){
             return body;
+        }else if(body instanceof Map && ((Map) body).containsKey("error")){
+            throw ExceptionBuilder.build(Integer.valueOf(((Map) body).get("status").toString()), ((Map) body).get("message").toString());
         }
+
         Result result=Result.success(body);
         if(body instanceof String){
             serverHttpResponse.getHeaders().setContentType(MediaType.APPLICATION_JSON_UTF8);
