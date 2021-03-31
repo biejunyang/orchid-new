@@ -1,10 +1,13 @@
-package com.orchid.security.jwt;
+package com.orchid.security.filter;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.orchid.core.jwt.JwtTokenUtil;
-import com.orchid.core.jwt.exception.JwtTokenException;
+import cn.hutool.core.util.StrUtil;
+import com.orchid.core.ResultCodeEnum;
+import com.orchid.core.util.JwtTokenUtil;
+import com.orchid.core.exception.JwtTokenException;
 import com.orchid.core.Result;
+import com.orchid.security.config.properties.JwtConfigProperties;
 import com.orchid.web.util.ResponseUtil;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -39,26 +42,21 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }else{
-            String tokenHeader = request.getHeader("Authorization");
-            if (ObjectUtil.isNotEmpty(tokenHeader)) {
-                if (tokenHeader.startsWith("Bearer ")) {
-                    String token = tokenHeader.substring(7);
-                    try {
-                        String username = JwtTokenUtil.parseSubject(token);
-                        UsernamePasswordAuthenticationToken authenticationToken =
-                                new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
-                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                        doFilter(request, response, filterChain);
-                        return;
-                    } catch (JwtTokenException e) {
-                        ResponseUtil.renderJson(response, Result.error(e.getMessage()));
-                        return;
-                    }
-                } else {
-                    ResponseUtil.renderJson(response, Result.error(402, null));
+            String token = getToken(request);
+            if (StrUtil.isNotEmpty(token)) {
+                try {
+                    String username = JwtTokenUtil.parseSubject(token);
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                            new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    doFilter(request, response, filterChain);
+                    return;
+                } catch (JwtTokenException e) {
+                    ResponseUtil.renderJson(response, Result.error(e.code(), e.msg()));
+                    return;
                 }
             } else {
-                ResponseUtil.renderJson(response, Result.error("未登录"));
+                ResponseUtil.renderJson(response, Result.error(ResultCodeEnum.NOT_LOGIN_ERROR));
             }
         }
     }
@@ -73,10 +71,19 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private boolean checkIgnores(HttpServletRequest request) {
         String method = request.getMethod();
 
+        //忽略登录认证
+        AntPathRequestMatcher loginMatcher = new AntPathRequestMatcher(jwtConfigProperties.getLogin(), HttpMethod.POST.name());
+        if(loginMatcher.matches(request)){
+            return true;
+        }
+
         HttpMethod httpMethod = HttpMethod.resolve(method);
         if (ObjectUtil.isNull(httpMethod)) {
             httpMethod = HttpMethod.GET;
         }
+
+
+
 
         Set<String> ignores = CollectionUtil.newHashSet();
 
@@ -130,5 +137,19 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         return false;
+    }
+
+
+    private String getToken(HttpServletRequest request){
+        String token=request.getParameter("token");
+        if(StrUtil.isNotEmpty(token)){
+            return token;
+        }
+        token = request.getHeader("Authorization");
+        if(StrUtil.isNotEmpty(token) && token.startsWith("Bearer ")){
+            token = token.substring(7);
+            return token;
+        }
+        return null;
     }
 }

@@ -1,7 +1,9 @@
-package com.orchid.security.jwt;
+package com.orchid.security.filter;
 
-import com.orchid.core.jwt.JwtTokenUtil;
+import com.orchid.core.exception.ExceptionBuilder;
+import com.orchid.core.util.JwtTokenUtil;
 import com.orchid.core.Result;
+import com.orchid.security.config.properties.JwtConfigProperties;
 import com.orchid.web.util.ResponseUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,8 +25,9 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
     private JwtConfigProperties jwtConfigProperties;
 
-    protected JwtAuthenticationFilter(JwtConfigProperties jwtConfigProperties) {
+    public JwtAuthenticationFilter(JwtConfigProperties jwtConfigProperties) {
         super(jwtConfigProperties.getLogin());
+        this.jwtConfigProperties=jwtConfigProperties;
     }
 
 
@@ -60,13 +63,13 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         Map<String, Object> map=new HashMap<>();
         map.put(username, username);
         map.put("authorities", authorities);
-        String token=JwtTokenUtil.createToken(map);
+        String token=JwtTokenUtil.createToken(username,map);
         ResponseUtil.renderJson(response, Result.success(token));
 
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
-        response.getWriter().write("authentication failed, reason: " + failed.getMessage());
+        ResponseUtil.renderJson(response, Result.error(failed.getMessage()));
     }
 }

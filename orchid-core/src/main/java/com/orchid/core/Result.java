@@ -32,16 +32,16 @@ public class Result<T> {
 
 
     public static  <T> Result success(int code,T data){
-        return new Result<T>(Status.SUCCESS, code, ResultEnum.OK.msg(), data);
+        return new Result<T>(Status.SUCCESS, code, ResultCodeEnum.OK.msg(), data);
     }
 
 
     public static  Result success(){
-        return new Result<>(Status.SUCCESS, ResultEnum.OK.code(), ResultEnum.OK.msg(), null);
+        return new Result<>(Status.SUCCESS, ResultCodeEnum.OK.code(), ResultCodeEnum.OK.msg(), null);
     }
 
     public static  <T> Result success(T data){
-        return new Result<>(Status.SUCCESS, ResultEnum.OK.code(), ResultEnum.OK.msg(), data);
+        return new Result<>(Status.SUCCESS, ResultCodeEnum.OK.code(), ResultCodeEnum.OK.msg(), data);
     }
 
 
@@ -51,7 +51,7 @@ public class Result<T> {
 
 
     public static  Result success(String msg){
-        return new Result<>(Status.SUCCESS, ResultEnum.OK.code(), msg, null);
+        return new Result<>(Status.SUCCESS, ResultCodeEnum.OK.code(), msg, null);
     }
 
     public static <T> Result success(ResultCode resultCode, T data){
@@ -60,11 +60,11 @@ public class Result<T> {
 
 
     public static Result error() {
-        return new Result(Status.FAILURE, ResultEnum.SERVER_ERROR.code(), ResultEnum.SERVER_ERROR.msg(), null);
+        return new Result(Status.FAILURE, ResultCodeEnum.SERVER_ERROR.code(), ResultCodeEnum.SERVER_ERROR.msg(), null);
     }
 
     public static Result error(String msg) {
-        return new Result(Status.FAILURE, ResultEnum.SERVER_ERROR.code(), msg, null);
+        return new Result(Status.FAILURE, ResultCodeEnum.SERVER_ERROR.code(), msg, null);
     }
 
     public static Result error(int code,String msg) {
@@ -113,7 +113,7 @@ public class Result<T> {
     }
 
     enum Status{
-        FAILURE,SUCCESS,NOT_LOGIN
+        FAILURE,SUCCESS
     }
 
 }

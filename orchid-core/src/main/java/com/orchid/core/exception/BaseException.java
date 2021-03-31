@@ -2,7 +2,7 @@ package com.orchid.core.exception;
 
 
 import com.orchid.core.ResultCode;
-import com.orchid.core.ResultEnum;
+import com.orchid.core.ResultCodeEnum;
 
 public class BaseException extends RuntimeException implements ResultCode {
     private int code;
@@ -16,7 +16,7 @@ public class BaseException extends RuntimeException implements ResultCode {
 
     public BaseException(String msg) {
         super(msg);
-        this.code= ResultEnum.SERVER_ERROR.code();
+        this.code= ResultCodeEnum.SERVER_ERROR.code();
         this.msg = msg;
     }
 

@@ -1,12 +1,15 @@
-package com.orchid.core.jwt;
+package com.orchid.core.util;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.orchid.core.jwt.exception.ExpireTokenException;
-import com.orchid.core.jwt.exception.JwtTokenException;
+import com.orchid.core.ResultCodeEnum;
+import com.orchid.core.exception.ExpireTokenException;
+import com.orchid.core.exception.InvalidTokenException;
+import com.orchid.core.exception.JwtTokenException;
+import com.orchid.core.jwt.GlobalJwtConfig;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -75,15 +78,15 @@ public class JwtTokenUtil {
             JWSVerifier jwsVerifier=new MACVerifier(GlobalJwtConfig.getSecret());
             if(signedJWT.verify(jwsVerifier)){
                 if(signedJWT.getJWTClaimsSet().getExpirationTime().compareTo(new Date()) < 0){
-                    throw new ExpireTokenException("expire token");
+                    throw new ExpireTokenException(ResultCodeEnum.TOKEN_EXPIRED_ERROR);
                 }
                 return signedJWT;
             }else{
-                throw new JwtTokenException("invalid token");
+                throw new InvalidTokenException(ResultCodeEnum.TOKEN_INVALID_ERROR);
             }
         } catch (ParseException | JOSEException e) {
             e.printStackTrace();
-            throw new JwtTokenException(e.getMessage());
+            throw new JwtTokenException(ResultCodeEnum.TOKEN_INVALID_ERROR);
         }
     }
 

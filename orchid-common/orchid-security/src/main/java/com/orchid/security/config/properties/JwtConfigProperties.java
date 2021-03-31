@@ -1,4 +1,4 @@
-package com.orchid.security.jwt;
+package com.orchid.security.config.properties;
 
 import cn.hutool.core.collection.CollectionUtil;
 import lombok.Data;
@@ -12,10 +12,7 @@ import java.util.List;
 public class JwtConfigProperties {
 
 
-    /**
-     * 使用启动jwt认证
-     */
-    private Boolean enable=false;
+
     /**
      * 签名秘钥
      */
@@ -57,7 +54,7 @@ public class JwtConfigProperties {
     /**
      * 忽略的请求地址
      */
-    private final JwtConfigProperties.IgnoreConfig ignores = new JwtConfigProperties.IgnoreConfig();
+    private final IgnoreConfig ignores = new IgnoreConfig();
 
 
 

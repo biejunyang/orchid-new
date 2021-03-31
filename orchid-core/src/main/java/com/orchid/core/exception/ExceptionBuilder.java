@@ -1,7 +1,7 @@
 package com.orchid.core.exception;
 
 import com.orchid.core.ResultCode;
-import com.orchid.core.ResultEnum;
+import com.orchid.core.ResultCodeEnum;
 
 public class ExceptionBuilder {
 
@@ -11,7 +11,7 @@ public class ExceptionBuilder {
 
 
     public static BaseException build(String msg){
-        return new BaseException(ResultEnum.SERVER_ERROR.code(), msg);
+        return new BaseException(ResultCodeEnum.SERVER_ERROR.code(), msg);
     }
 
     public static BaseException build(int code, String msg){

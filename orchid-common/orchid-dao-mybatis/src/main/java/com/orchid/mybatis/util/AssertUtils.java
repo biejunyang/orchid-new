@@ -1,14 +1,10 @@
 package com.orchid.mybatis.util;
 
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-import com.orchid.core.ResultEnum;
+import com.orchid.core.ResultCodeEnum;
 import com.orchid.core.exception.BaseException;
-import com.orchid.core.exception.ExceptionBuilder;
-import com.orchid.mybatis.entity.BaseEntity;
 
 public class AssertUtils extends com.orchid.core.util.AssertUtils {
     public static <T, C> C columnNotUsed(BaseMapper<T> baseMapper, T entity, String label, SFunction<T, C> function, boolean nullable, T oldEntity) {
@@ -23,7 +19,7 @@ public class AssertUtils extends com.orchid.core.util.AssertUtils {
         int count = baseMapper.selectCount(Wrappers.<T>lambdaQuery()//
             .eq(function, value));
         if (count > 0) {
-            throw new BaseException(ResultEnum.BUSINESS_PARAM_ERROR.code(), label + value + "已存在");
+            throw new BaseException(ResultCodeEnum.BUSINESS_PARAM_ERROR.code(), label + value + "已存在");
         }
         return value;
     }
@@ -49,7 +45,7 @@ public class AssertUtils extends com.orchid.core.util.AssertUtils {
         AssertUtils.notBlank(value, label);
         int count = baseMapper.selectCount(Wrappers.<C>lambdaQuery(value));
         if (count < 1) {
-            throw new BaseException(ResultEnum.BUSINESS_PARAM_ERROR.code(),label + "不存在");
+            throw new BaseException(ResultCodeEnum.BUSINESS_PARAM_ERROR.code(),label + "不存在");
         }
         return value;
     }

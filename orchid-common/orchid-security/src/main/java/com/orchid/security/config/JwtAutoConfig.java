@@ -1,6 +1,7 @@
-package com.orchid.security.jwt;
+package com.orchid.security.config;
 
-import com.orchid.core.jwt.JwtTokenUtil;
+import com.orchid.core.util.JwtTokenUtil;
+import com.orchid.security.config.properties.JwtConfigProperties;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -15,7 +16,6 @@ import org.springframework.context.annotation.Import;
 @AutoConfigureBefore({SecurityAutoConfiguration.class})
 @EnableConfigurationProperties({JwtConfigProperties.class})
 @ConditionalOnClass({JwtTokenUtil.class})
-@ConditionalOnProperty(name = "orchid.auth.jwt.enable", havingValue = "true")
 @ConditionalOnWebApplication(
         type = ConditionalOnWebApplication.Type.SERVLET
 )
