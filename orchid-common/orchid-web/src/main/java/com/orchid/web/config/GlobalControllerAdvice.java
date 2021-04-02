@@ -75,7 +75,7 @@ public class GlobalControllerAdvice implements ResponseBodyAdvice {
             return Result.error(msg);
         }else{
             ex.printStackTrace();
-            return Result.error();
+            return Result.error(ex.getMessage());
         }
 
     }
