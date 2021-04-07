@@ -17,6 +17,7 @@
         <module>orchid-web</module>
         <module>orchid-dao-mybatis</module>
         <module>orchid-security</module>
+        <module>orchid-resource</module>
     </modules>
 
 </project>
