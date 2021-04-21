@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.orchid.resource.config.ResourceServerAutoConfig,\
+com.orchid.resource.config.TokenConfig

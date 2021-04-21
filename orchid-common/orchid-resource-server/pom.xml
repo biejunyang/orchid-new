@@ -10,19 +10,30 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.orchid.resource</groupId>
-    <artifactId>orchid-resource</artifactId>
+    <artifactId>orchid-resource-server</artifactId>
 
 
     <dependencies>
+        <dependency>
+            <groupId>com.orchid</groupId>
+            <artifactId>orchid-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-security</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+            <groupId>org.springframework.security.oauth.boot</groupId>
+            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
         </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>-->
+        <!--</dependency>-->
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-jose</artifactId>
@@ -32,11 +43,10 @@
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>javax.servlet</groupId>-->
-            <!--<artifactId>servlet-api</artifactId>-->
-            <!--<version>3.0-alpha-1</version>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+        </dependency>
     </dependencies>
 </project>
