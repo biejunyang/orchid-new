@@ -1,10 +1,17 @@
 package com.orchid.resource.context;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.orchid.core.auth.AuthContext;
 import com.orchid.core.auth.AuthUser;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户认证上下文实现
@@ -14,15 +21,25 @@ import java.util.List;
  */
 public class AuthContextImpl implements AuthContext {
 
+    private static final String SUPER_ADMIN="admin";
+
+    @Override
+    public Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
 
     @Override
     public AuthUser getLoginUser() {
-        return (AuthUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication authentication=getAuthentication();
+        if(authentication!= null && authentication.isAuthenticated()){
+            return (AuthUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }
+        return null;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return getLoginUser()!=null ? getLoginUser().getUsername(): null;
     }
 
     @Override
@@ -32,22 +49,27 @@ public class AuthContextImpl implements AuthContext {
 
     @Override
     public List<String> getAuthoritys() {
+        AuthUser authUser=getLoginUser();
+        if(authUser!=null && authUser.getAuthorities()!=null){
+            if(getLoginUser().getAuthorities()!=null){
+                return getLoginUser().getAuthorities().parallelStream()
+                        .map(au -> au.getAuthority()).collect(Collectors.toList());
+            }
+        }
         return null;
     }
 
     @Override
     public String getClientId() {
-        return null;
+        OAuth2Authentication authentication=(OAuth2Authentication)getAuthentication();
+        return authentication.getOAuth2Request().getClientId();
     }
 
-    @Override
-    public String getToken() {
-        return null;
-    }
 
     @Override
     public boolean hasPermission(String authority) {
-        return false;
+        List<String> authorityes=getAuthoritys();
+        return CollectionUtil.isNotEmpty(authorityes) && authorityes.contains(authority);
     }
 
     @Override
@@ -67,6 +89,6 @@ public class AuthContextImpl implements AuthContext {
 
     @Override
     public boolean isSuperAdmin() {
-        return false;
+        return SUPER_ADMIN.equals(getUsername());
     }
 }

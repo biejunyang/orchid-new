@@ -28,7 +28,7 @@ public class AuthUser implements UserDetails {
     private Integer disabled;
 
     //权限列表
-    private List<SimpleGrantedAuthority> authorities;
+    private List<? extends  GrantedAuthority> authorities;
 
 
     public void setUsername(String username) {
@@ -63,7 +63,7 @@ public class AuthUser implements UserDetails {
         this.disabled = disabled;
     }
 
-    public void setAuthorities(List<SimpleGrantedAuthority> authorities) {
+    public void setAuthorities(List<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
     }
 
