@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 2021/4/23 16:53
  */
-public class AuthContextImpl implements AuthContext {
+public class ResourceServerAuthContextImpl implements AuthContext {
 
     private static final String SUPER_ADMIN="admin";
 
