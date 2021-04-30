@@ -3,6 +3,7 @@ package com.orchid.web.config;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +38,7 @@ public class JacksonSerializerConfig {
     private String pattern="yyyy-MM-dd HH:mm:ss";
 
     @Bean
+    @ConditionalOnMissingBean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
         Map<Class<?>, JsonSerializer<?>> map = new HashMap<>();
         map.put(LocalDateTime.class, localDateTimeSerializer());
@@ -45,6 +47,7 @@ public class JacksonSerializerConfig {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public LocalDateTimeSerializer localDateTimeSerializer() {
         return new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(pattern));
     }
