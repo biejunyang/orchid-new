@@ -5,7 +5,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 认证用户信息
@@ -29,6 +31,9 @@ public class AuthUser implements UserDetails {
 
     //权限列表
     private List<? extends  GrantedAuthority> authorities;
+
+    //其他自定义附加信息
+    private Map<String, Object> additionalInformation=new HashMap<>();
 
 
     public void setUsername(String username) {
@@ -67,6 +72,14 @@ public class AuthUser implements UserDetails {
         this.authorities = authorities;
     }
 
+    public Map<String, Object> getAdditionalInformation() {
+        return additionalInformation;
+    }
+
+    public void setAdditionalInformation(Map<String, Object> additionalInformation) {
+        this.additionalInformation = additionalInformation;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
@@ -101,4 +114,6 @@ public class AuthUser implements UserDetails {
     public boolean isEnabled() {
         return this.disabled == null || this.disabled.equals(0);
     }
+
+
 }
