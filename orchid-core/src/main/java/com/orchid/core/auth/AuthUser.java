@@ -14,6 +14,8 @@ import java.util.Map;
  */
 public class AuthUser implements UserDetails {
 
+    //用户id
+    private Long id;
     //用户名
     private String username;
 
@@ -78,6 +80,14 @@ public class AuthUser implements UserDetails {
 
     public void setAdditionalInformation(Map<String, Object> additionalInformation) {
         this.additionalInformation = additionalInformation;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
