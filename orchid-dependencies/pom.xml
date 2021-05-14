@@ -42,7 +42,7 @@
         <druid.starter.version>1.1.18</druid.starter.version>
         <ttl.version>2.10.2</ttl.version>
         <mybatis-plus.version>3.3.1.tmp</mybatis-plus.version>
-        <hutool.version>4.5.16</hutool.version>
+        <hutool.version>5.3.7</hutool.version>
         <apollo.version>1.4.0</apollo.version>
         <mongodb-plus.version>1.0.0.RELEASE</mongodb-plus.version>
         <aliyun-sdk-oss.version>3.5.0</aliyun-sdk-oss.version>
