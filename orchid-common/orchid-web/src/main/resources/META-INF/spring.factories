@@ -1,5 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.orchid.web.config.GlobalControllerAdvice,\
-com.orchid.web.config.JacksonSerializerConfig
+com.orchid.web.config.JacksonSerializerConfig,\
+com.orchid.web.init.SysConfigInitListener
 
 
