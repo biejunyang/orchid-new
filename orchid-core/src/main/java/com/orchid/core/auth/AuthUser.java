@@ -41,6 +41,9 @@ public class AuthUser implements Serializable {
     //手机号
     private String phone;
 
+    //是否管理员类型
+    private Integer adminType;
+
     //其他自定义附加信息
     private Map<String, Object> details=new HashMap<>();
 
@@ -138,5 +141,13 @@ public class AuthUser implements Serializable {
 
     public void setDetails(Map<String, Object> details) {
         this.details = details;
+    }
+
+    public Integer getAdminType() {
+        return adminType;
+    }
+
+    public void setAdminType(Integer adminType) {
+        this.adminType = adminType;
     }
 }
