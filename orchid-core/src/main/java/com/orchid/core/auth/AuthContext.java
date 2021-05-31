@@ -1,6 +1,5 @@
 package com.orchid.core.auth;
 
-import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -12,17 +11,11 @@ import java.util.List;
  */
 public interface AuthContext {
 
-
-    /**
-     * 获取当前认证信息
-     * @return
-     */
-    Authentication getAuthentication();
     /**
      * 获取当前登录用户
      * @return
      */
-    Object getLoginUser();
+    AuthUser getLoginUser();
 
 
     /**

@@ -1,10 +1,10 @@
 package com.orchid.core.auth;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
+import cn.hutool.core.collection.CollectionUtil;
+
+import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,75 +12,44 @@ import java.util.Map;
 /**
  * 认证用户信息
  */
-public class AuthUser implements UserDetails {
+public class AuthUser implements Serializable {
 
     //用户id
     private Long id;
+
     //用户名
     private String username;
 
     //密码
-    private String password;
+//    private String password;
 
-    //是否过期：0否；1是
-    private Integer expired;
+    //姓名
+    private String realName;
 
-    //是否锁住：0否；1是
-    private Integer locked;
+    //昵称
+    private String nickName;
 
-    //是否禁用：0否；1是
-    private Integer disabled;
+    //出生日期
+    private Date birthday;
 
-    //权限列表
-    private List<? extends  GrantedAuthority> authorities;
+    //性别：1男，2女，3不明
+    private Integer sex;
+
+    //邮箱
+    private String email;
+
+    //手机号
+    private String phone;
 
     //其他自定义附加信息
-    private Map<String, Object> additionalInformation=new HashMap<>();
+    private Map<String, Object> details=new HashMap<>();
 
+    //角色列表
+    private List<String> roles = CollectionUtil.newArrayList();
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    //权限列表
+    private List<String> authorities = CollectionUtil.newArrayList();
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Integer getExpired() {
-        return expired;
-    }
-
-    public void setExpired(Integer expired) {
-        this.expired = expired;
-    }
-
-    public Integer getLocked() {
-        return locked;
-    }
-
-    public void setLocked(Integer locked) {
-        this.locked = locked;
-    }
-
-    public Integer getDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(Integer disabled) {
-        this.disabled = disabled;
-    }
-
-    public void setAuthorities(List<? extends GrantedAuthority> authorities) {
-        this.authorities = authorities;
-    }
-
-    public Map<String, Object> getAdditionalInformation() {
-        return additionalInformation;
-    }
-
-    public void setAdditionalInformation(Map<String, Object> additionalInformation) {
-        this.additionalInformation = additionalInformation;
-    }
 
     public Long getId() {
         return id;
@@ -90,40 +59,84 @@ public class AuthUser implements UserDetails {
         this.id = id;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
     public String getUsername() {
-        return this.username;
+        return username;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return this.expired ==  null || this.expired.equals(0);
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return this.locked ==  null || this.locked.equals(0);
+    public String getRealName() {
+        return realName;
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return this.disabled == null || this.disabled.equals(0);
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
 
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+    public List<String> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<String> authorities) {
+        this.authorities = authorities;
+    }
+
+    public Map<String, Object> getDetails() {
+        return details;
+    }
+
+    public void setDetails(Map<String, Object> details) {
+        this.details = details;
+    }
 }
