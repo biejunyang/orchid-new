@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,14 +25,23 @@ public class SubjectAttributeUserTokenConverter extends DefaultUserAuthenticatio
      * @return
      */
     @Override
-    public Map<String, ?> convertUserAuthentication(Authentication authentication) {
-        //默认只添加了，用户名和权限信息到jwt token中
-        Map<String, Object> response= (Map<String, Object>) super.convertUserAuthentication(authentication);
+    public Map<String, ?> convertUserAuthentication(Authentication authentication) {        //默认只添加了，用户名username和权限信息authority到jwt token中
+//        Map<String, Object> response= (Map<String, Object>) super.convertUserAuthentication(authentication);
 
         //添加用户的自定义信息
-        AuthUser authUser=(AuthUser) authentication.getPrincipal();
-        response.putAll(authUser.getAdditionalInformation());
+        AuthUser user=(AuthUser) authentication.getPrincipal();
 
+        Map<String, Object> response = new LinkedHashMap();
+        response.put("id", user.getId());
+        response.put("username", user.getUsername());
+        if (authentication.getAuthorities() != null && !authentication.getAuthorities().isEmpty()) {
+            response.put("authorities", AuthorityUtils.authorityListToSet(authentication.getAuthorities()));
+        }
+
+
+        //其他自定义信息
+        response.put("organId", user.getDetails().get("organId"));
+//        response.putAll(user.getAdditionalInformation());
         return response;
     }
 
@@ -43,23 +53,23 @@ public class SubjectAttributeUserTokenConverter extends DefaultUserAuthenticatio
      */
     @Override
     public Authentication extractAuthentication(Map<String, ?> map) {
-        if (map.containsKey("user_name")) {
-            String username=map.get("user_name").toString();
+        if (map.containsKey("username")) {
+            String username=map.get("username").toString();
             Object authorities = map.get("authorities");
 
             AuthUser principal=new AuthUser();
             principal.setUsername(username);
+            principal.setId(Long.valueOf(map.get("id").toString()));
             List<GrantedAuthority> grantedAuthorities=null;
-
             if(authorities!=null && authorities instanceof List){
                 grantedAuthorities= AuthorityUtils.createAuthorityList(((List<String>)authorities).toArray(new String[]{}));
-                principal.setAuthorities(grantedAuthorities);
+                principal.setAuthorities((List<String>)authorities);
             }
 
             Map<String,Object> addtionalInformation=new HashMap<>(map);
-            addtionalInformation.remove("user_name");
+            addtionalInformation.remove("username");
             addtionalInformation.remove("authorities");
-            principal.setAdditionalInformation(addtionalInformation);
+            principal.setDetails(addtionalInformation);
 
             return new UsernamePasswordAuthenticationToken(principal, "N/A", grantedAuthorities);
         } else {

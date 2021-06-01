@@ -12,6 +12,11 @@ import java.util.List;
 public interface AuthContext {
 
     /**
+     * 获取认证对象信息
+     * @return
+     */
+    Object getAuthentication();
+    /**
      * 获取当前登录用户
      * @return
      */

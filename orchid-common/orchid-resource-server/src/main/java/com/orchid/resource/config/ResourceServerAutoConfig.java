@@ -135,21 +135,22 @@ public class ResourceServerAutoConfig {
         @ConditionalOnMissingBean
         public PrincipalExtractor principalExtractor(){
             return map -> {
-                AuthUser authUser=new AuthUser();
-                authUser.setUsername(map.get("user_name").toString());
+                String username=map.get("username").toString();
                 Object authorities = map.get("authorities");
 
-                List<GrantedAuthority> grantedAuthorities=null;
-
+                AuthUser principal=new AuthUser();
+                principal.setUsername(username);
+                principal.setId(Long.valueOf(map.get("id").toString()));
                 if(authorities!=null && authorities instanceof List){
-                    grantedAuthorities= AuthorityUtils.createAuthorityList(((List<String>)authorities).toArray(new String[]{}));
-                    authUser.setAuthorities(grantedAuthorities);
+                    principal.setAuthorities((List<String>)authorities);
                 }
-                Map<String, Object> addtionalInfomation=new HashMap<>(map);
-                addtionalInfomation.remove("user_name");
-                addtionalInfomation.remove("authorities");
-                authUser.setAdditionalInformation(addtionalInfomation);
-                return authUser;
+
+                Map<String,Object> addtionalInformation=new HashMap<>(map);
+                addtionalInformation.remove("username");
+                addtionalInformation.remove("authorities");
+                principal.setDetails(addtionalInformation);
+
+                return principal;
             };
         }
     }

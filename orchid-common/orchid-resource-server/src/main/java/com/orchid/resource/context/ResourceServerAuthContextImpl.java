@@ -51,10 +51,7 @@ public class ResourceServerAuthContextImpl implements AuthContext {
     public List<String> getAuthoritys() {
         AuthUser authUser=getLoginUser();
         if(authUser!=null && authUser.getAuthorities()!=null){
-            if(getLoginUser().getAuthorities()!=null){
-                return getLoginUser().getAuthorities().parallelStream()
-                        .map(au -> au.getAuthority()).collect(Collectors.toList());
-            }
+            return  authUser.getAuthorities();
         }
         return null;
     }
@@ -89,6 +86,6 @@ public class ResourceServerAuthContextImpl implements AuthContext {
 
     @Override
     public boolean isSuperAdmin() {
-        return SUPER_ADMIN.equals(getUsername());
+        return getLoginUser()!=null && getLoginUser().getAdminType()!=null && getLoginUser().getAdminType().equals(1);
     }
 }
