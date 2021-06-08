@@ -141,9 +141,9 @@ public class ResourceServerAutoConfig {
                 AuthUser principal=new AuthUser();
                 principal.setUsername(username);
                 principal.setId(Long.valueOf(map.get("id").toString()));
-                if(authorities!=null && authorities instanceof List){
-                    principal.setAuthorities((List<String>)authorities);
-                }
+//                if(authorities!=null && authorities instanceof List){
+//                    principal.setAuthorities((List<String>)authorities);
+//                }
 
                 Map<String,Object> addtionalInformation=new HashMap<>(map);
                 addtionalInformation.remove("username");

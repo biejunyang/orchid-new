@@ -44,15 +44,16 @@ public class ResourceServerAuthContextImpl implements AuthContext {
 
     @Override
     public List<String> getRoles() {
+//        return getLoginUser()!=null ? getLoginUser().getRoles(): null;
         return null;
     }
 
     @Override
     public List<String> getAuthoritys() {
-        AuthUser authUser=getLoginUser();
-        if(authUser!=null && authUser.getAuthorities()!=null){
-            return  authUser.getAuthorities();
-        }
+//        AuthUser authUser=getLoginUser();
+//        if(authUser!=null && authUser.getAuthorities()!=null){
+//            return  authUser.getAuthorities();
+//        }
         return null;
     }
 

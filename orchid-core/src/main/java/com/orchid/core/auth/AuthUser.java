@@ -2,12 +2,11 @@ package com.orchid.core.auth;
 
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.orchid.core.util.TreeUtil;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 认证用户信息
@@ -48,11 +47,13 @@ public class AuthUser implements Serializable {
     private Map<String, Object> details=new HashMap<>();
 
     //角色列表
-    private List<String> roles = CollectionUtil.newArrayList();
+    private List<AuthRole> roles = CollectionUtil.newArrayList();
 
     //权限列表
-    private List<String> authorities = CollectionUtil.newArrayList();
+    private List<AuthPrivilege> privileges = CollectionUtil.newArrayList();
 
+    //权限表示列表
+    private List<String> authorities;
 
     public Long getId() {
         return id;
@@ -119,22 +120,6 @@ public class AuthUser implements Serializable {
     }
 
 
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
-
-    public List<String> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(List<String> authorities) {
-        this.authorities = authorities;
-    }
-
     public Map<String, Object> getDetails() {
         return details;
     }
@@ -149,5 +134,41 @@ public class AuthUser implements Serializable {
 
     public void setAdminType(Integer adminType) {
         this.adminType = adminType;
+    }
+
+    public List<AuthRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<AuthRole> roles) {
+        this.roles = roles;
+    }
+
+    public List<AuthPrivilege> getPrivileges() {
+        if(CollectionUtil.isNotEmpty(this.privileges)) {
+            return this.privileges;
+        }
+        if(CollectionUtil.isNotEmpty(this.roles)){
+            List<AuthPrivilege> data=new ArrayList<>();
+            this.roles.forEach(role -> data.addAll(role.getPrivileges()));
+            return TreeUtil.buildTree(data.parallelStream().distinct().collect(Collectors.toList()));
+        }
+        return new ArrayList<>();
+    }
+
+    public void setPrivileges(List<AuthPrivilege> privileges) {
+        this.privileges = privileges;
+    }
+
+    public List<String> getAuthorities() {
+        List<String> codes=new ArrayList<>();
+        this.roles.forEach(role -> {
+            codes.addAll(role.getPrivileges().parallelStream().map(AuthPrivilege::getCode).collect(Collectors.toList()));
+        });
+        return codes;
+    }
+
+    public void setAuthorities(List<String> authorities) {
+        this.authorities = authorities;
     }
 }
