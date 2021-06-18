@@ -162,9 +162,11 @@ public class AuthUser implements Serializable {
 
     public List<String> getAuthorities() {
         List<String> codes=new ArrayList<>();
-        this.roles.forEach(role -> {
-            codes.addAll(role.getPrivileges().parallelStream().map(AuthPrivilege::getCode).collect(Collectors.toList()));
-        });
+        if(CollectionUtil.isNotEmpty(roles)){
+            this.roles.forEach(role -> {
+                codes.addAll(role.getPrivileges().parallelStream().map(AuthPrivilege::getCode).collect(Collectors.toList()));
+            });
+        }
         return codes;
     }
 

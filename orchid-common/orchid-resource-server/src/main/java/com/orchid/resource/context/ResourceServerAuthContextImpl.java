@@ -2,6 +2,7 @@ package com.orchid.resource.context;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.orchid.core.auth.AuthContext;
+import com.orchid.core.auth.AuthRole;
 import com.orchid.core.auth.AuthUser;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.security.core.Authentication;
@@ -21,7 +22,6 @@ import java.util.stream.Collectors;
  */
 public class ResourceServerAuthContextImpl implements AuthContext {
 
-    private static final String SUPER_ADMIN="admin";
 
     @Override
     public Authentication getAuthentication() {
@@ -44,16 +44,18 @@ public class ResourceServerAuthContextImpl implements AuthContext {
 
     @Override
     public List<String> getRoles() {
-//        return getLoginUser()!=null ? getLoginUser().getRoles(): null;
+        if(getLoginUser()!=null && CollectionUtil.isNotEmpty(getLoginUser().getRoles())){
+            return getLoginUser().getRoles().parallelStream().map(AuthRole::getCode).collect(Collectors.toList());
+        }
         return null;
     }
 
     @Override
     public List<String> getAuthoritys() {
-//        AuthUser authUser=getLoginUser();
-//        if(authUser!=null && authUser.getAuthorities()!=null){
-//            return  authUser.getAuthorities();
-//        }
+        AuthUser authUser=getLoginUser();
+        if(authUser!=null && authUser.getAuthorities()!=null){
+            return  authUser.getAuthorities();
+        }
         return null;
     }
 
@@ -72,7 +74,7 @@ public class ResourceServerAuthContextImpl implements AuthContext {
 
     @Override
     public boolean hasRole(String roleCode) {
-        return false;
+        return CollectionUtil.isNotEmpty(getRoles()) && getRoles().contains(roleCode);
     }
 
     @Override

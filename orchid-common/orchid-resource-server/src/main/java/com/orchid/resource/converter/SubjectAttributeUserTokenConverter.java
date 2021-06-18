@@ -60,10 +60,10 @@ public class SubjectAttributeUserTokenConverter extends DefaultUserAuthenticatio
             AuthUser principal=new AuthUser();
             principal.setUsername(username);
             principal.setId(Long.valueOf(map.get("id").toString()));
+            principal.setAdminType(Integer.valueOf(map.get("adminType").toString()));
             List<GrantedAuthority> grantedAuthorities=null;
             if(authorities!=null && authorities instanceof List){
                 grantedAuthorities= AuthorityUtils.createAuthorityList(((List<String>)authorities).toArray(new String[]{}));
-//                principal.setAuthorities((List<String>)authorities);
             }
 
             Map<String,Object> addtionalInformation=new HashMap<>(map);

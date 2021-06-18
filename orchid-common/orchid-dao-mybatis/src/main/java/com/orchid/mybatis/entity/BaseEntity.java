@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 public abstract class BaseEntity<T extends BaseEntity<T>> extends Model<T> {
@@ -40,7 +41,7 @@ public abstract class BaseEntity<T extends BaseEntity<T>> extends Model<T> {
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
-    protected Date createTime=new Date();
+    protected Date createTime;
 
     /**
      * 更新人名称
@@ -135,4 +136,8 @@ public abstract class BaseEntity<T extends BaseEntity<T>> extends Model<T> {
         return (T)this;
     }
 
+    @Override
+    protected Serializable pkVal() {
+        return this.id;
+    }
 }
