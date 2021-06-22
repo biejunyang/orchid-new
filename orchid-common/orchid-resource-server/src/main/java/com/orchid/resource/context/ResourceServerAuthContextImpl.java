@@ -61,8 +61,11 @@ public class ResourceServerAuthContextImpl implements AuthContext {
 
     @Override
     public String getClientId() {
-        OAuth2Authentication authentication=(OAuth2Authentication)getAuthentication();
-        return authentication.getOAuth2Request().getClientId();
+        if(getAuthentication()!=null && getAuthentication().isAuthenticated()){
+            OAuth2Authentication authentication=(OAuth2Authentication)getAuthentication();
+            return authentication.getOAuth2Request().getClientId();
+        }
+        return null;
     }
 
 
