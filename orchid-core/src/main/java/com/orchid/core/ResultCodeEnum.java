@@ -3,8 +3,9 @@ package com.orchid.core;
 public enum ResultCodeEnum implements ResultCode {
 
     OK(200, "ok"),
-    SERVER_ERROR(500, "服务器错误"),
 
+    SERVER_ERROR(500, "服务器错误"),
+    REPEAT_COMMIT_ERROR(301, "重复提交"),
     BUSINESS_PARAM_ERROR(400, "业务参数错误"),
 
     NOT_LOGIN_ERROR(401, "未登录"),

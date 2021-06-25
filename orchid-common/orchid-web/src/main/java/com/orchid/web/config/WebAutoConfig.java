@@ -1,9 +1,11 @@
 package com.orchid.web.config;
 
+import com.orchid.web.aop.NoRepeatInsertAop;
 import com.orchid.web.filter.RequestThreadContextFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * web应用默认自动配置
@@ -15,15 +17,24 @@ import org.springframework.context.annotation.Configuration;
 public class WebAutoConfig {
 
 
+    private RedisTemplate<String, Object> redisTemplate;
+
     /**
-     *
+     * 注册请求线程上下文过滤器
      * @return
      */
+//    @Bean
+//    public FilterRegistrationBean<RequestThreadContextFilter> requestThreadContextFilterFilterRegistrationBean(RedisTemplate redisTemplate) {
+//        FilterRegistrationBean<RequestThreadContextFilter> registration = new FilterRegistrationBean<>(new RequestThreadContextFilter(redisTemplate));
+//        registration.addUrlPatterns("/*");
+//        return registration;
+//    }
+
+
+
     @Bean
-    public FilterRegistrationBean<RequestThreadContextFilter> requestThreadContextFilterFilterRegistrationBean() {
-        FilterRegistrationBean<RequestThreadContextFilter> registration = new FilterRegistrationBean<>(new RequestThreadContextFilter());
-        registration.addUrlPatterns("/*");
-        return registration;
+    public NoRepeatInsertAop noRepeatInsertAop(){
+        return new NoRepeatInsertAop(redisTemplate);
     }
 
 }

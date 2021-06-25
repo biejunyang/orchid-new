@@ -7,6 +7,7 @@ import com.orchid.core.exception.ExceptionBuilder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.validation.BindException;
@@ -73,11 +74,12 @@ public class GlobalControllerAdvice implements ResponseBodyAdvice {
             String msg=ex.getMessage();
             ex.printStackTrace();
             return Result.error(msg);
+        }else if(ex instanceof HttpMessageNotReadableException){
+            return Result.error("请求参数错误");
         }else{
             ex.printStackTrace();
             return Result.error(ex.getMessage());
         }
-
     }
 
 }

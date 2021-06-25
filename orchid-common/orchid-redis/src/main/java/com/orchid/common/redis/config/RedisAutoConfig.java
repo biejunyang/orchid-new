@@ -1,4 +1,4 @@
-package com.orchid.common.redis;
+package com.orchid.common.redis.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
