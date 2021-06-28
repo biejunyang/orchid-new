@@ -11,11 +11,16 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -76,6 +81,22 @@ public class GlobalControllerAdvice implements ResponseBodyAdvice {
             return Result.error(msg);
         }else if(ex instanceof HttpMessageNotReadableException){
             return Result.error("请求参数错误");
+        }else if(ex instanceof MethodArgumentNotValidException){
+            StringBuffer buffer = new StringBuffer();
+            BindingResult result  = ((MethodArgumentNotValidException) ex).getBindingResult();
+            if (result.hasErrors()) {
+                List<ObjectError> errors = result.getAllErrors();
+
+                errors.forEach(p ->{
+
+                    FieldError fieldError = (FieldError) p;
+//                    log.error("Data check failure : object{"+fieldError.getObjectName()+"},field{"+fieldError.getField()+
+//                            "},errorMessage{"+fieldError.getDefaultMessage()+"}");
+                    buffer.append(fieldError.getDefaultMessage()).append(",");
+                });
+            }
+            String msg = buffer.toString().substring(0, buffer.toString().length()-1);
+            return Result.error(msg);
         }else{
             ex.printStackTrace();
             return Result.error(ex.getMessage());

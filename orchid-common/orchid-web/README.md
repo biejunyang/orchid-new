@@ -28,12 +28,17 @@
 6、防止用户重复提交：用户在一次请求返回之前，提交了多次。
     产生原因：网络延时，请求处理缓慢等
     相同用户相同请求时请求返回之前，不允许重复提价，实现redis分布式锁(setnx命令)
-
+    
+    RequestThreadContextFilter中实现防止用户重复提交
+    
 
 7、防止数据重复插入：唯一索引，select insert，分布式锁
    针对某个字段信息，不允许重复插入,
    redis分布式锁+数据存在校验：高并发下相同数据只能有一个进行插入(获取到锁)，插入时判断数据是否已存在，插入成功则释放锁
-   
+   NoRepeatInsertAop+NoRepeatInsert，如：
+  
+   @NoRepeatInsert(key="'SysConfig:code:'+#sysConfig.code", label = "参数编码")
+   //    @NoRepeatInsert(label = "参数编码", name="code")
 
   
 
