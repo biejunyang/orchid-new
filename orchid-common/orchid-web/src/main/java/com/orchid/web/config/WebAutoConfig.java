@@ -2,6 +2,7 @@ package com.orchid.web.config;
 
 import com.orchid.web.aop.NoRepeatInsertAop;
 import com.orchid.web.filter.RequestThreadContextFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 public class WebAutoConfig {
 
 
+    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     /**
