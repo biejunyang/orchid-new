@@ -59,14 +59,14 @@ public class IpAddressUtil {
         }
     }
 
-//    /**
-//     * 根据ip地址定位
-//     *
-//     * @author xuyuxiang
-//     * @date 2020/3/16 15:17
-//     */
-//    @SuppressWarnings("unchecked")
-//    public static String getAddress(HttpServletRequest request) {
+    /**
+     * 根据ip地址定位
+     *
+     * @author xuyuxiang
+     * @date 2020/3/16 15:17
+     */
+    @SuppressWarnings("unchecked")
+    public static String getAddress(String ip) {
 //        String resultJson = SymbolConstant.DASH;
 //
 //        String ip = getIp(request);
@@ -94,6 +94,7 @@ public class IpAddressUtil {
 //            log.error(">>> 根据ip定位异常，请求号为：{}，具体信息为：{}", RequestNoContext.get(), e.getMessage());
 //        }
 //        return resultJson;
-//    }
+        return null;
+    }
 
 }

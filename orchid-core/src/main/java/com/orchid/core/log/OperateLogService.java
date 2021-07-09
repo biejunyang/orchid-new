@@ -11,12 +11,19 @@ public interface OperateLogService {
 
 
     /**
-     * 写入日志实现
+     * 操作日志写入实现
      * @param operateLog
-     * @param args
+     * @param joinPoint
      * @param result
-     * @param username
      */
-    void insertLog(JoinPoint joinPoint, OperateLog operateLog);
+    void insertOperateLog(OperateLog operateLog, JoinPoint joinPoint, Object result);
 
+
+    /**
+     * 异常操作日志写入实现
+     * @param operateLog
+     * @param joinPoint
+     * @param exception
+     */
+    void insertExceptionLog(OperateLog operateLog, JoinPoint joinPoint, Exception exception);
 }

@@ -46,11 +46,7 @@ public class OperateLogAop {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
         OperateLog operateLog = method.getAnnotation(OperateLog.class);
-        Object[] args = joinPoint.getArgs();
-//        //异步记录日志
-//        LogManager.me().executeOperationLog(
-//                businessLog, LoginContextHolder.me().getSysLoginUserAccount(), joinPoint, JSON.toJSONString(result));
-        operateLogService.insertLog(joinPoint, operateLog);
+        operateLogService.insertOperateLog(operateLog, joinPoint, result);
     }
 
     /**
@@ -64,10 +60,7 @@ public class OperateLogAop {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
         OperateLog operateLog = method.getAnnotation(OperateLog.class);
-        operateLogService.insertLog(joinPoint, operateLog);
+        operateLogService.insertExceptionLog(operateLog, joinPoint, exception);
 
-        //异步记录日志
-//        LogManager.me().executeExceptionLog(
-//                businessLog, LoginContextHolder.me().getSysLoginUserAccount(), joinPoint, exception);
     }
 }
